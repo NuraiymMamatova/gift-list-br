@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME}
+  datasource:
+    password: ${DATABASE_PASSWORD}
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+  jpa:
+    hibernate:
+      ddl-auto: create
+  graphql:
+    graphiql:
+      enabled: true
