@@ -11,3 +11,4 @@ spring:
   graphql:
     graphiql:
       enabled: true
+JWT_SECRET_KEY: ${APP_JWT_SECRET_KEY}
