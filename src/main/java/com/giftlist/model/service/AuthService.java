@@ -5,5 +5,6 @@ import com.giftlist.model.dto.response.AuthenticationResponse;
 
 public interface AuthService {
     AuthenticationResponse register(RegistrationRequest request);
+
     AuthenticationResponse authenticate(RegistrationRequest request);
 }
