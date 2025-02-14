@@ -33,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
         user.setRole(Role.USER);
         userRepository.save(user);
         String token = jwtService.generateJwtToken(user);
-        return new AuthenticationResponse(token);
+        return new AuthenticationResponse(user.getEmail(), token, user.getUserId(), user.getFullName(), user.getImage(), user.getRole().name());
     }
 
     public AuthenticationResponse authenticate(RegistrationRequest request) {
@@ -44,7 +44,7 @@ public class AuthServiceImpl implements AuthService {
         );
         User user = userRepository.findByEmail(request.email()).orElseThrow();
         String token = jwtService.generateJwtToken(user);
-        return new AuthenticationResponse(token);
+        return new AuthenticationResponse(user.getEmail(), token, user.getUserId(), user.getFullName(), user.getImage(), user.getRole().name());
     }
 
 }
