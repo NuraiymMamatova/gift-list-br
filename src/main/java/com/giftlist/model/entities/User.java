@@ -36,6 +36,12 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "image")
+    private String image;
+
+    @Column(name = "is_agree")
+    private boolean isAgree;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
