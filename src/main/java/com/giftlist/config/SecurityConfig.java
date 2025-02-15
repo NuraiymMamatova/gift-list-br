@@ -32,7 +32,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests.requestMatchers("/auth/login/**", "/auth/registration/**")
+                        authorizeRequests.requestMatchers("/auth/**")
                                 .permitAll()
 // @EnableMethodSecurity in SecurityConfig class and  @PreAuthorize("hasAuthority('ADMIN')") above api or method declaration = .requestMatchers("/admin_only/**").hasAuthority("ADMIN")
                                 .anyRequest()
