@@ -4,11 +4,12 @@ import com.giftlist.model.dto.request.LoginRequest;
 import com.giftlist.model.dto.request.RegistrationRequest;
 import com.giftlist.model.dto.response.AuthenticationResponse;
 import com.giftlist.model.service.AuthService;
-import com.giftlist.smtp.EmailDetails;
+import com.giftlist.smtp.EmailRequest;
 import com.giftlist.smtp.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.context.Context;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,15 +31,30 @@ public class AuthApi {
     }
 
     @PostMapping("/sendMail")
-    public String sendMail(@RequestBody EmailDetails details) {
+    public String sendMail(@RequestBody EmailRequest details) {
         return emailService.sendSimpleMail(details);
     }
 
     // Sending email with attachment
     @PostMapping("/sendMailWithAttachment")
     public String sendMailWithAttachment(
-            @RequestBody EmailDetails details) {
+            @RequestBody EmailRequest details) {
         return emailService.sendMailWithAttachment(details);
+    }
+
+    @PostMapping("/sendHTMLEmail")
+    public ResponseEntity<String> sendEmail(@RequestBody EmailRequest emailRequest) {
+        Context context = new Context();
+        // Set variables for the template from the POST request data
+        context.setVariable("name", emailRequest.getName());
+        context.setVariable("message", emailRequest.getMsgBody());
+        context.setVariable("subject", emailRequest.getSubject());
+        try {
+        return     emailService.sendHTMLEmail(emailRequest.getRecipient(), emailRequest.getSubject(), "testmailtemplate", context);
+
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error sending email: " + e.getMessage());
+        }
     }
 
 }

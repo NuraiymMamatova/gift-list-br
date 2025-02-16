@@ -9,9 +9,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class EmailDetails {
+public class EmailRequest {
     private String recipient;
     private String msgBody;
     private String subject;
     private String attachment;
+    private String name;
 }
