@@ -1,5 +1,6 @@
 package com.giftlist.model.service.serviceimpl;
 
+import com.giftlist.model.dto.request.LoginRequest;
 import com.giftlist.model.dto.request.RegistrationRequest;
 import com.giftlist.model.dto.response.AuthenticationResponse;
 import com.giftlist.model.entities.User;
@@ -36,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
         return new AuthenticationResponse(user.getEmail(), token, user.getUserId(), user.getFullName(), user.getImage(), user.getRole().name());
     }
 
-    public AuthenticationResponse authenticate(RegistrationRequest request) {
+    public AuthenticationResponse authenticate(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.email(), request.password()
@@ -48,4 +49,3 @@ public class AuthServiceImpl implements AuthService {
     }
 
 }
-
