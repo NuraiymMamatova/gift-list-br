@@ -2,6 +2,7 @@ package com.giftlist.api;
 
 import com.giftlist.model.dto.request.LoginRequest;
 import com.giftlist.model.dto.request.RegistrationRequest;
+import com.giftlist.model.dto.request.ViaGoogleRequest;
 import com.giftlist.model.dto.response.AuthenticationResponse;
 import com.giftlist.model.service.AuthService;
 import com.giftlist.smtp.EmailRequest;
@@ -28,6 +29,11 @@ public class AuthApi {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(authService.authenticate(loginRequest));
+    }
+
+    @PostMapping("/viaGoogle")
+    public ResponseEntity<AuthenticationResponse> authViaGoogle(@RequestBody ViaGoogleRequest request) {
+        return ResponseEntity.ok(authService.viaGoogle(request));
     }
 
     @PostMapping("/sendMail")

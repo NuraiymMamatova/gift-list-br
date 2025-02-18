@@ -2,6 +2,7 @@ package com.giftlist.model.service.serviceimpl;
 
 import com.giftlist.model.dto.request.LoginRequest;
 import com.giftlist.model.dto.request.RegistrationRequest;
+import com.giftlist.model.dto.request.ViaGoogleRequest;
 import com.giftlist.model.dto.response.AuthenticationResponse;
 import com.giftlist.model.entities.User;
 import com.giftlist.model.enums.Role;
@@ -44,6 +45,13 @@ public class AuthServiceImpl implements AuthService {
                 )
         );
         User user = userRepository.findByEmail(request.email()).orElseThrow();
+        String token = jwtService.generateJwtToken(user);
+        return new AuthenticationResponse(user.getEmail(), token, user.getUserId(), user.getFullName(), user.getImage(), user.getRole().name());
+    }
+
+    @Override
+    public AuthenticationResponse viaGoogle(ViaGoogleRequest request) {
+        User user = userRepository.findByEmail(request.email()).orElseGet(() -> userRepository.save(new User(request.fullName(), request.email(), request.picture(), Role.USER)));
         String token = jwtService.generateJwtToken(user);
         return new AuthenticationResponse(user.getEmail(), token, user.getUserId(), user.getFullName(), user.getImage(), user.getRole().name());
     }
