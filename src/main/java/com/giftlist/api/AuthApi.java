@@ -1,5 +1,6 @@
 package com.giftlist.api;
 
+import com.giftlist.model.dto.request.ChangePasswordRequest;
 import com.giftlist.model.dto.request.LoginRequest;
 import com.giftlist.model.dto.request.RegistrationRequest;
 import com.giftlist.model.dto.request.ViaGoogleRequest;
@@ -61,6 +62,16 @@ public class AuthApi {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Error sending email: " + e.getMessage());
         }
+    }
+
+    @PostMapping("/forgotPasswordSendURLtoEmail")
+    public ResponseEntity<String> forgotPasswordSendURLtoEmail(@RequestParam(name = "email") String email, @RequestParam(name = "url") String url) {
+       return authService.forgotPasswordSendURLtoEmail(email, url);
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) throws Exception {
+        return authService.changePassword(changePasswordRequest);
     }
 
 }
