@@ -82,8 +82,11 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseEntity<String> changePassword(ChangePasswordRequest changePasswordRequest) throws Exception {
         User user = userRepository.findByEmail(crypto.decrypt(changePasswordRequest.email(), GIFT_LIST_APP_SECRET_KEY)).orElseThrow(() -> new Exception("Кирүү үчүн колдонуп жаткан маалыматтар туура эмес!"));
-        if (user.getPassword().matches(changePasswordRequest.oldPassword())) {
-            user.setPassword(changePasswordRequest.newPassword());
+        if (changePasswordRequest.oldPassword() != null && user.getPassword().matches(changePasswordRequest.oldPassword())) {
+            user.setPassword(passwordEncoder.encode(changePasswordRequest.newPassword()));
+            userRepository.save(user);
+        } else if (changePasswordRequest.oldPassword() == null || changePasswordRequest.oldPassword().isEmpty() && changePasswordRequest.newPassword() != null) {
+            user.setPassword(passwordEncoder.encode(changePasswordRequest.newPassword()));
             userRepository.save(user);
         } else {
             throw new Exception("Кирүү үчүн колдонуп жаткан маалыматтар туура эмес!");
