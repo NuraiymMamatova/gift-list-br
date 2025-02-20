@@ -15,4 +15,10 @@ public class EmailRequest {
     private String subject;
     private String attachment;
     private String name;
+
+    public EmailRequest(String recipient, String msgBody, String subject) {
+        this.recipient = recipient;
+        this.msgBody = msgBody;
+        this.subject = subject;
+    }
 }
