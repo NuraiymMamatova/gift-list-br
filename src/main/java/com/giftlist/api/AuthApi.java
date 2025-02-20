@@ -65,11 +65,11 @@ public class AuthApi {
     }
 
     @PostMapping("/forgotPasswordSendURLtoEmail")
-    public ResponseEntity<String> forgotPasswordSendURLtoEmail(@RequestParam(name = "email") String email, @RequestParam(name = "url") String url) {
-       return authService.forgotPasswordSendURLtoEmail(email, url);
+    public ResponseEntity<String> forgotPasswordSendURLtoEmail(@RequestParam(name = "email") String email, @RequestParam(name = "linkToChangePassword") String linkToChangePassword) {
+       return authService.forgotPasswordSendURLtoEmail(email, linkToChangePassword);
     }
 
-    @PostMapping("/changePassword")
+    @PutMapping("/changePassword")
     public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) throws Exception {
         return authService.changePassword(changePasswordRequest);
     }

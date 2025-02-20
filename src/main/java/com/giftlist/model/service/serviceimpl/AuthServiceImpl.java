@@ -1,5 +1,6 @@
 package com.giftlist.model.service.serviceimpl;
 
+import com.giftlist.crypt.Crypto;
 import com.giftlist.model.dto.request.ChangePasswordRequest;
 import com.giftlist.model.dto.request.LoginRequest;
 import com.giftlist.model.dto.request.RegistrationRequest;
@@ -13,6 +14,7 @@ import com.giftlist.model.service.JwtService;
 import com.giftlist.smtp.EmailRequest;
 import com.giftlist.smtp.EmailService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,6 +34,11 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
 
     private final EmailService emailService;
+
+    private final Crypto crypto;
+
+    @Value("${GIFT_LIST_APP_SECRET_KEY}")
+    private String GIFT_LIST_APP_SECRET_KEY;
 
     public AuthenticationResponse register(RegistrationRequest request) {
         User user = new User();
@@ -64,13 +71,17 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ResponseEntity<String> forgotPasswordSendURLtoEmail(String email, String url) {
-        String result = userRepository.existsByEmail(email) ? emailService.sendSimpleMail(new EmailRequest(email, url, "Gift List аккаунтуңуздун сыр сөзүн унутуп калуудан кийин өзгөртүү.")) : "Мындай email табылган жок!";
-        return ResponseEntity.ok(result);
+        try {
+            String result = userRepository.existsByEmail(email) ? emailService.sendSimpleMail(new EmailRequest(email, url + "/" + crypto.encrypt(email, GIFT_LIST_APP_SECRET_KEY), "Gift List аккаунтуңуздун сыр сөзүн унутуп калуудан кийин өзгөртүү.")) : "Мындай email табылган жок!";
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Override
     public ResponseEntity<String> changePassword(ChangePasswordRequest changePasswordRequest) throws Exception {
-        User user = userRepository.findByEmail(changePasswordRequest.email()).orElseThrow(() -> new Exception("Кирүү үчүн колдонуп жаткан маалыматтар туура эмес!"));
+        User user = userRepository.findByEmail(crypto.decrypt(changePasswordRequest.email(), GIFT_LIST_APP_SECRET_KEY)).orElseThrow(() -> new Exception("Кирүү үчүн колдонуп жаткан маалыматтар туура эмес!"));
         if (user.getPassword().matches(changePasswordRequest.oldPassword())) {
             user.setPassword(changePasswordRequest.newPassword());
             userRepository.save(user);
