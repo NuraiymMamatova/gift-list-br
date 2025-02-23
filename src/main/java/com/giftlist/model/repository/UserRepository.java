@@ -20,4 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select new com.giftlist.model.dto.response.UserResponse(u.country, u.dateOfBirth, u.facebookLink, u.hobbies, u.importantToKnow, u.instagramLink, u.phoneNumber, u.image, u.telegramLink, u.vkLink, u.fullName, u.email, u.clothingSize, u.shoeSize) from User u where u.userId = :userId")
     UserResponse findByUserId(Long userId);
 
+    @Query("select new com.giftlist.model.dto.response.UserResponse(u.country, u.dateOfBirth, u.facebookLink, u.hobbies, u.importantToKnow, u.instagramLink, u.phoneNumber, u.image, u.telegramLink, u.vkLink, u.fullName, u.email, u.clothingSize, u.shoeSize) from User u where u.email = :email")
+    UserResponse getUserProfileByEMail(String email);
+
 }

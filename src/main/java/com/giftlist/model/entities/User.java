@@ -1,6 +1,7 @@
 package com.giftlist.model.entities;
 
 import com.giftlist.model.enums.ClothingSize;
+import com.giftlist.model.enums.Country;
 import com.giftlist.model.enums.Role;
 import com.giftlist.model.enums.ShoeSize;
 import jakarta.persistence.*;
@@ -43,9 +44,6 @@ public class User implements UserDetails {
     @Column(name = "is_agree")
     private boolean isAgree;
 
-    @Column(name = "country")
-    private String country;
-
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
@@ -69,6 +67,10 @@ public class User implements UserDetails {
 
     @Column(name = "vk_link")
     private String vkLink;
+
+    @Column(name = "country")
+    @Enumerated(EnumType.STRING)
+    private Country country;
 
     @Column(name = "clothing_size")
     @Enumerated(EnumType.STRING)

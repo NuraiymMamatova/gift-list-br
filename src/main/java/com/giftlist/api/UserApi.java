@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/user")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class UserApi {
 
     private final UserService userService;
@@ -18,8 +18,13 @@ public class UserApi {
     @PutMapping("/update")
     @PreAuthorize("hasAuthority('USER')")
     public UserResponse updateProfile(@RequestHeader("Authorization") String token, @RequestBody UserRequest userRequest) {
-        System.out.println(token);
         return userService.updateProfile(token.substring(7), userRequest);
+    }
+
+    @GetMapping
+    @PreAuthorize("hasAuthority('USER')")
+    public UserResponse getProfile(@RequestHeader("Authorization") String token) {
+        return userService.getProfile(token.substring(7));
     }
 
 }

@@ -1,6 +1,7 @@
 package com.giftlist.model.dto.response;
 
 import com.giftlist.model.enums.ClothingSize;
+import com.giftlist.model.enums.Country;
 import com.giftlist.model.enums.ShoeSize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserResponse {
-    private String country;
+    private Country country;
     private LocalDate dateOfBirth;
     private String facebookLink;
     private String hobbies;

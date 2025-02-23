@@ -10,4 +10,6 @@ public interface UserService extends UserDetailsService {
     UserDetails loadUserByUsername(String email) throws UsernameNotFoundException;
 
     UserResponse updateProfile(String token, UserRequest userRequest);
+
+    UserResponse getProfile(String token);
 }

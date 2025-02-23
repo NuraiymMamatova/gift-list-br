@@ -45,4 +45,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUserId(user.getUserId());
     }
 
+    @Override
+    public UserResponse getProfile(String token) {
+        String username = jwtService.extractUsername(token);
+        return userRepository.getUserProfileByEMail(username);
+    }
+
 }
