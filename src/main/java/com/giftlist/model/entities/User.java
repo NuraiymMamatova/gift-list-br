@@ -1,15 +1,16 @@
 package com.giftlist.model.entities;
 
+import com.giftlist.model.enums.ClothingSize;
+import com.giftlist.model.enums.Country;
 import com.giftlist.model.enums.Role;
+import com.giftlist.model.enums.ShoeSize;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User implements UserDetails {
 
     @SequenceGenerator(name = "user_id", sequenceName = "user_id_seq", allocationSize = 1)
@@ -41,6 +43,42 @@ public class User implements UserDetails {
 
     @Column(name = "is_agree")
     private boolean isAgree;
+
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
+
+    @Column(name = "facebook_link")
+    private String facebookLink;
+
+    @Column(name = "hobbies")
+    private String hobbies;
+
+    @Column(name = "important_to_know")
+    private String importantToKnow;
+
+    @Column(name = "instagram_link")
+    private String instagramLink;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "telegram_link")
+    private String telegramLink;
+
+    @Column(name = "vk_link")
+    private String vkLink;
+
+    @Column(name = "country")
+    @Enumerated(EnumType.STRING)
+    private Country country;
+
+    @Column(name = "clothing_size")
+    @Enumerated(EnumType.STRING)
+    private ClothingSize clothingSize;
+
+    @Column(name = "shoe_size")
+    @Enumerated(EnumType.STRING)
+    private ShoeSize shoeSize;
 
     @Enumerated(EnumType.STRING)
     private Role role;
