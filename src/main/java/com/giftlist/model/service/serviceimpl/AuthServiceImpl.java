@@ -81,16 +81,34 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ResponseEntity<String> changePassword(ChangePasswordRequest changePasswordRequest) throws Exception {
-        User user = userRepository.findByEmail(crypto.decrypt(changePasswordRequest.email(), GIFT_LIST_APP_SECRET_KEY)).orElseThrow(() -> new Exception("Кирүү үчүн колдонуп жаткан маалыматтар туура эмес!"));
-        if (changePasswordRequest.oldPassword() != null && user.getPassword().matches(changePasswordRequest.oldPassword())) {
+        System.out.println(changePasswordRequest.oldPassword());
+        System.out.println(changePasswordRequest.email());
+        System.out.println(changePasswordRequest.newPassword());
+        System.out.println(changePasswordRequest.hasPassword());
+        System.out.println(1);
+        if (!changePasswordRequest.hasPassword()) {
+            User user = userRepository.findByEmail(changePasswordRequest.email()).orElseThrow(() -> new Exception("Кирүү үчүн колдонуп жаткан маалыматтар туура эмес!"));
             user.setPassword(passwordEncoder.encode(changePasswordRequest.newPassword()));
             userRepository.save(user);
-        } else if (changePasswordRequest.oldPassword() == null || changePasswordRequest.oldPassword().isEmpty() && changePasswordRequest.newPassword() != null) {
-            user.setPassword(passwordEncoder.encode(changePasswordRequest.newPassword()));
-            userRepository.save(user);
-        } else {
-            throw new Exception("Кирүү үчүн колдонуп жаткан маалыматтар туура эмес!");
+            return ResponseEntity.ok("Сыр сөзүңүз сакталды!");
         }
+        if (changePasswordRequest.oldPassword() != null) {
+            System.out.println(changePasswordRequest.email());
+            User user = userRepository.findByEmail(changePasswordRequest.email()).orElseThrow(() -> new Exception("Кирүү үчүн колдонуп жаткан маалыматтар туура эмес!"));
+            System.out.println(changePasswordRequest.oldPassword());
+            System.out.println(user.getPassword());
+            System.out.println(passwordEncoder.matches(changePasswordRequest.oldPassword(), user.getPassword()));
+            if (passwordEncoder.matches(changePasswordRequest.oldPassword(), user.getPassword())) {
+                user.setPassword(passwordEncoder.encode(changePasswordRequest.newPassword()));
+                userRepository.save(user);
+                return ResponseEntity.ok("Сыр сөзүңүз жаңыланды!");
+            } else {
+                throw new Exception("Data is not correct!");
+            }
+        }
+        User user = userRepository.findByEmail(crypto.decrypt(changePasswordRequest.email(), GIFT_LIST_APP_SECRET_KEY)).orElseThrow(() -> new Exception("Кирүү үчүн колдонуп жаткан маалыматтар туура эмес!"));
+        user.setPassword(passwordEncoder.encode(changePasswordRequest.newPassword()));
+        userRepository.save(user);
         return ResponseEntity.ok("Сыр сөзүңүз жаңыланды!");
     }
 
