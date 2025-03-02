@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HolidayResponse {
+
     private Long holidayId;
 
     private String holidayName;

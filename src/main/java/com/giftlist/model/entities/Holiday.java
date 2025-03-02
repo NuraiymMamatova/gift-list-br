@@ -25,9 +25,19 @@ public class Holiday {
 
     private String holidayImageUrl;
 
-    public Holiday(String holidayName, LocalDate holidayDate, String holidayImageUrl) {
+    @ManyToOne(fetch = FetchType.EAGER)
+    private User owner;
+
+    public Holiday(String holidayName, LocalDate holidayDate, String holidayImageUrl, User owner) {
         this.holidayName = holidayName;
         this.holidayDate = holidayDate;
         this.holidayImageUrl = holidayImageUrl;
+        this.owner = owner;
+    }
+
+    public Holiday(String holidayName, LocalDate holidayDate, String holidayImageUrl) {
+        if (holidayName != null) this.holidayName = holidayName;
+        if (holidayDate != null) this.holidayDate = holidayDate;
+        if (holidayImageUrl != null) this.holidayImageUrl = holidayImageUrl;
     }
 }

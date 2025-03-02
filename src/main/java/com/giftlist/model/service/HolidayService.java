@@ -9,5 +9,9 @@ import java.util.List;
 public interface HolidayService {
     ResponseEntity<String> saveHoliday(HolidayRequest holidayRequest, String token);
 
-    List<HolidayResponse> getUserHolidaysByUserId(String token);
+    List<HolidayResponse> getUserHolidaysByUserId(Long userId);
+
+    ResponseEntity<String> updateHoliday(Long userId, Long holidayId, HolidayRequest holidayRequest);
+
+    ResponseEntity<String> deleteHoliday(Long userId, Long holidayId);
 }

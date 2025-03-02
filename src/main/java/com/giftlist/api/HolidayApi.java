@@ -24,9 +24,19 @@ public class HolidayApi {
         return holidayService.saveHoliday(holidayRequest, token.substring(7));
     }
 
-    @GetMapping
-    public List<HolidayResponse> getUserHolidaysByUserId(@RequestHeader("Authorization") String token) {
-        return holidayService.getUserHolidaysByUserId(token.substring(7));
+    @PutMapping("/{userId}/{holidayId}")
+    public ResponseEntity<String> updateHoliday(@PathVariable Long userId, @PathVariable Long holidayId, @RequestBody HolidayRequest holidayRequest) {
+        return holidayService.updateHoliday(userId, holidayId, holidayRequest);
+    }
+
+    @GetMapping("/getHolidaysByUserId/{userId}")
+    public List<HolidayResponse> getUserHolidaysByUserId(@PathVariable Long userId) {
+        return holidayService.getUserHolidaysByUserId(userId);
+    }
+
+    @DeleteMapping("/{userId}/{holidayId}")
+    public ResponseEntity<String> deleteHoliday(@PathVariable Long userId, @PathVariable Long holidayId) {
+        return holidayService.deleteHoliday(userId, holidayId);
     }
 
 }
