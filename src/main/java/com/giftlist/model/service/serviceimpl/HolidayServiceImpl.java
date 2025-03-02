@@ -9,6 +9,7 @@ import com.giftlist.model.repository.UserRepository;
 import com.giftlist.model.service.HolidayService;
 import com.giftlist.model.service.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -25,13 +26,12 @@ public class HolidayServiceImpl implements HolidayService {
     private final JwtService jwtService;
 
     @Override
-    public String saveHoliday(HolidayRequest holidayRequest, String token) {
+    public ResponseEntity<String> saveHoliday(HolidayRequest holidayRequest, String token) {
         String username = jwtService.extractUsername(token);
         User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-        holidayRepository.save(new Holiday(holidayRequest.holidayName(), holidayRequest.holidayDate(), holidayRequest.holidayImageUrl()));
-//        user.addHoliday();
+        user.addHoliday(holidayRepository.save(new Holiday(holidayRequest.holidayName(), holidayRequest.holidayDate(), holidayRequest.holidayImageUrl())));
         userRepository.save(user);
-        return "";
+        return ResponseEntity.ok("Successfully saved holiday");
     }
 
     @Override
