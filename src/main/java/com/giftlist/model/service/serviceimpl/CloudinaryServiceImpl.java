@@ -53,8 +53,7 @@ public class CloudinaryServiceImpl {
         return ResponseEntity.ok(service(request));
     }*/
 
-
-   /*
+   /* TODO: write it into service of entity
     public  void uploadImage(*//*parameters*//*) {
         final String cloudinaryImageId = entity.getCloudinaryImageId();
         if (StringUtils.isNotBlank(cloudinaryImageId)) {
