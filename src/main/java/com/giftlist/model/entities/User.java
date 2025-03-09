@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -83,11 +84,19 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Holiday> holidays;
+
     public User(String fullName, String email, String image, Role role) {
         this.fullName = fullName;
         this.email = email;
         this.image = image;
         this.role = role;
+    }
+
+    public void addHoliday(Holiday holiday) {
+        if (this.holidays == null) holidays = new ArrayList<>();
+        else holidays.add(holiday);
     }
 
     @Override
